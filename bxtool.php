@@ -134,6 +134,8 @@ class MHBitrixTool {
     }
 
     private function getSubdirs($rootDir) {
+        if (!file_exists($rootDir))
+            return false;
         $dirs = array();
         $dh  = opendir($rootDir);
         while (false !== ($filename = readdir($dh))) {
@@ -170,7 +172,29 @@ class MHBitrixTool {
             $component['ID'],
             $tplName
         ));
-   }
+    }
+
+    private function getComponentSiteTemplates($component, $location='bitrix') {
+        
+        $templates = array();
+        $prefix = $location != 'bitrix' ? $location . '/' : '';
+        
+        $siteTemplates = $this->getSubdirs($this->site_root . "/$location/templates/");
+        foreach($siteTemplates as $siteTemplate) {
+        
+            $path = $this->site_root . "/$location/templates/$siteTemplate/components/" . $component['VENDOR'] . '/' . $component['ID'];
+        
+            if (file_exists($path)) {
+                $tpls = $this->getSubdirs($path);
+                foreach ($tpls as $tpl) {
+                    $templates[] = $tpl . ' (' . $prefix . $siteTemplate . ')';
+                }
+            }
+
+        }
+        
+        return $templates;    
+    }
 
     private function RunTemplateCommand($cmd='', $param1=false, $param2=false) {
 
@@ -186,8 +210,14 @@ class MHBitrixTool {
                     $this->ShowUsage('template list');
                     return;                    
                 }
+
                 $component = $this->parseComponentName($param1);
-                $templates = $this->getSubdirs($this->getComponentDir($component) . '/templates/');
+                $templates = array_merge(
+                    $this->getSubdirs($this->getComponentDir($component) . '/templates/'),
+                    $this->getComponentSiteTemplates($component, 'bitrix'),
+                    $this->getComponentSiteTemplates($component, 'local')
+                );
+
                 echo implode(PHP_EOL, $templates) . PHP_EOL;
                 break;
             
