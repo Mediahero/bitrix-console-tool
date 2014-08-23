@@ -21,6 +21,7 @@ class TemplatesListCommand extends Command {
         $this->setDefinition(array(
             new InputArgument('component', InputArgument::REQUIRED, 'name of the component which templates we want to list'),
             new InputOption('full-path', 'f', InputOption::VALUE_NONE, 'output full paths to the templates folders'),
+            new InputOption('show-location', 'l', InputOption::VALUE_NONE, 'output templates names and its locations'),
         ));
       
         parent::configure();
@@ -41,11 +42,12 @@ class TemplatesListCommand extends Command {
         }
 
         $showFullPath = $input->getOption('full-path');
+        $showLocation = $input->getOption('show-location');
 
         $templates = array_merge(
             $component->getDefaultTemplates($showFullPath),
-            $component->getSiteTemplates('bitrix', $showFullPath),
-            $component->getSiteTemplates('local', $showFullPath)
+            $component->getSiteTemplates('bitrix', $showFullPath, $showLocation),
+            $component->getSiteTemplates('local', $showFullPath, $showLocation)
         );
 
         foreach($templates as $template) {
