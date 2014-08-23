@@ -1,0 +1,13 @@
+{
+    "name": "mediahero/bxtool",
+    "description": "Bitrix CMF console tool",
+    "require": {
+        "php": ">=5.4",
+        "symfony/console": "~2.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    }
+}
