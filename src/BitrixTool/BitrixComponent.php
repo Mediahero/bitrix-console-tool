@@ -37,7 +37,7 @@ class BitrixComponent
     }
 
     public function getDefaultTemplates($returnFullPath=false) {
-        return FileSystemHelpers::getSubdirs($this->getComponentDir() . '/templates/', $returnFullPath);
+        return FileSystemHelpers::getSubdirs($this->getComponentDir() . '/templates', $returnFullPath);
     }
 
     public function getSiteTemplates($location="bitrix", $returnFullPath=false, $showLocation=false) {
@@ -51,7 +51,7 @@ class BitrixComponent
         foreach($siteTemplates as $siteTemplate) 
         {        
             $templatePath = implode("/", array(
-                "$siteRoot/$location/templates/$siteTemplate/components/",
+                "$siteRoot/$location/templates/$siteTemplate/components",
                 $this->getNamespace(),
                 $this->getName()
             ));

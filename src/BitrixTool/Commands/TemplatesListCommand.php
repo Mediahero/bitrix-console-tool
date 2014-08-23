@@ -20,7 +20,7 @@ class TemplatesListCommand extends Command {
         // bxtool template list componentName
         $this->setDefinition(array(
             new InputArgument('component', InputArgument::REQUIRED, 'name of the component which templates we want to list'),
-            //new InputOption('full-path', 'p', InputOption::VALUE_OPTIONAL, 'Use custom path for config'),
+            new InputOption('full-path', 'f', InputOption::VALUE_NONE, 'output full paths to the templates folders'),
         ));
       
         parent::configure();
@@ -40,10 +40,12 @@ class TemplatesListCommand extends Command {
             exit(1);
         }
 
+        $showFullPath = $input->getOption('full-path');
+
         $templates = array_merge(
-            $component->getDefaultTemplates(),
-            $component->getSiteTemplates('bitrix'),
-            $component->getSiteTemplates('local')
+            $component->getDefaultTemplates($showFullPath),
+            $component->getSiteTemplates('bitrix', $showFullPath),
+            $component->getSiteTemplates('local', $showFullPath)
         );
 
         foreach($templates as $template) {
