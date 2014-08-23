@@ -69,4 +69,24 @@ class BitrixTool
         return file_exists("$siteRoot/local/templates/$templateName");
     }
 
+
+    public function getComponents($location) {
+        
+        $components = array();
+        $componentsFolder = $this->getSiteRoot() . "/$location/components";
+        
+        if (file_exists($componentsFolder))
+        {
+            $namespaces = FileSystemHelpers::getSubdirs($componentsFolder);
+            foreach($namespaces as $namespace) {
+                $componentNames = FileSystemHelpers::getSubdirs("$componentsFolder/$namespace");
+                foreach ($componentNames as $componentName) {
+                    $components[] = "$namespace:$componentName";
+                }
+            }                
+        }
+
+        return $components;
+    }    
+
 }
