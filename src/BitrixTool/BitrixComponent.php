@@ -77,4 +77,20 @@ class BitrixComponent
         return file_exists($this->getComponentDir());
     }
 
+    public function getTemplatePath($templateName) {
+        return $this->getComponentDir() . "/templates/" . $templateName;
+    }
+
+    public function getLocalTemplatePath($siteTemplateName, $templateName) {
+        return implode('/', array(
+            BitrixTool::getInstance()->getSiteRoot(),
+            'local/templates',
+            $siteTemplateName,
+            'components',
+            $this->getNamespace(),
+            $this->getName(),
+            $templateName
+        ));
+    }
+
 }

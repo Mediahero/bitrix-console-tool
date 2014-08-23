@@ -35,7 +35,7 @@ class FileSystemHelpers
             { 
                 if ( is_dir($src . '/' . $file) ) 
                 { 
-                    $this->CopyDir($src . '/' . $file,$dst . '/' . $file); 
+                    self::CopyDir($src . '/' . $file,$dst . '/' . $file); 
                 } 
                 else 
                 { 

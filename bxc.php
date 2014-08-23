@@ -13,4 +13,5 @@ if (file_exists($prolog)) include($prolog); else die("Not in a Bitrix site root.
 $app = new Application('BitrixTool', BitrixTool\BitrixTool::VERSION);
 $app->add(new BitrixTool\Commands\ShowWebRootCommand('show-web-root'));
 $app->add(new BitrixTool\Commands\TemplatesListCommand('templates:list'));
+$app->add(new BitrixTool\Commands\TemplatesCopyCommand('templates:copy'));
 $app->run();

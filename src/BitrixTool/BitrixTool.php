@@ -64,4 +64,9 @@ class BitrixTool
         return $siteTemplates;
     }
 
+    public function siteTemplateExists($templateName) {
+        $siteRoot = $this->getSiteRoot();
+        return file_exists("$siteRoot/local/templates/$templateName");
+    }
+
 }
