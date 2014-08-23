@@ -6,7 +6,7 @@ class BitrixTool
 {  
     const VERSION = "0.0.1";
 
-    private static $_nstance = null;
+    private static $instance = null;
 
     private function __constructor() {}
 
@@ -15,7 +15,7 @@ class BitrixTool
         if (!self::$instance)
             self::$instance = new self();        
         
-        return self::$_instance;
+        return self::$instance;
     }    
 
     public function getSiteRoot($start_dir=false) {

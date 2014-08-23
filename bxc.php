@@ -7,7 +7,8 @@ use Symfony\Component\Console\Application;
 
 //FIXME: Хак, но пока штатно не реализован CliApplication в Битриксе, у нас выхода другого нет.
 $_SERVER['DOCUMENT_ROOT'] = BitrixTool\BitrixTool::getInstance()->getSiteRoot();
-include($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
+$prolog = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php";
+if (file_exists($prolog)) include($prolog); else die("Not in a Bitrix site root." . PHP_EOL);
 
 $app = new Application('BitrixTool', BitrixTool\BitrixTool::VERSION);
 $app->add(new BitrixTool\Commands\ShowWebRootCommand());
