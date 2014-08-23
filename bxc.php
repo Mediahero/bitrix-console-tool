@@ -11,5 +11,6 @@ $prolog = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_befor
 if (file_exists($prolog)) include($prolog); else die("Not in a Bitrix site root." . PHP_EOL);
 
 $app = new Application('BitrixTool', BitrixTool\BitrixTool::VERSION);
-$app->add(new BitrixTool\Commands\ShowWebRootCommand());
+$app->add(new BitrixTool\Commands\ShowWebRootCommand('show-web-root'));
+$app->add(new BitrixTool\Commands\TemplatesListCommand('templates:list'));
 $app->run();
