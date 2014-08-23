@@ -54,8 +54,7 @@ class MHBitrixTool {
             
             case 'include':
                 // include componentName
-                $componentName = $args[2];
-                $this->getComponentParameters($componentName);
+                call_user_func_array(array($this, 'RunIncludeComponentCommand'), array_slice($args, 2));
                 break;
 
             case 'component':
@@ -224,27 +223,50 @@ class MHBitrixTool {
         }
     }
 
+    public function RunIncludeComponentCommand($componentName) {
+        $arParams = $this->getComponentParameters($componentName);
+        if (!$arParams)
+            return false;
+
+        $php = sprintf('<?$APPLICATION->IncludeComponent("%s", "", array(', $componentName) . PHP_EOL;
+        
+        foreach ($arParams['DEFAULTS'] as $name => $value) {
+            // TODO: Добавить вывод комментария с именем параметра.
+            $php .= sprintf('    "%s" => %s,', $name, var_export($value, true)) . PHP_EOL; 
+        }
+
+        $php .= '  ),' . PHP_EOL . 
+                '  false' . PHP_EOL .
+                ');/*'.$componentName.'*/?>' . PHP_EOL;
+
+        echo $php;
+    }
+
     public function getComponentParameters($componentName) {
        
         $component = $this->parseComponentName($componentName);
+
         $parametersFilePath = $this->getComponentDir($component) . '/.parameters.php';
-        echo "$parametersFilePath\n";
         if (!is_file($parametersFilePath)) {
             echo "Error: Parameters file for component $componentName not found!" . PHP_EOL;
             return;
         }
-
+        
         include ($parametersFilePath);
-        ksort( $arComponentParameters['PARAMETERS'] );
 
-        foreach( $arComponentParameters['PARAMETERS'] as $paramName => $arParam ){
-            $arParams[ $paramName ] = $arParam['DEFAULT'] ? $arParam['DEFAULT'] : '';
+        $arParams = array();
+        // FIXME: Почему-то NAME не для всех параметров заполняются, 
+        //скорее всего проблема связана с подключением lang-файла.    
+        //$arNames = array(); 
+        foreach( $arComponentParameters['PARAMETERS'] as $name => $param){
+            $arParams[ $name ] = $param['DEFAULT'] ? $param['DEFAULT'] : '';
+            //$arNames[ $name ] = $param['NAME'];
         }
 
-        $arReturn['status'] = 'found';
-        $arReturn['data'] = $arParams;
-
-        var_export($arReturn['data']);
+        return array(
+            'DEFAULTS' => $arParams,
+            //'DESCRIPTIONS' => $arNames, 
+        );        
     }
 
     private function RunComponentCommand($cmd='') {
