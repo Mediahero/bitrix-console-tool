@@ -15,4 +15,5 @@ $app->add(new BitrixTool\Commands\ShowWebRootCommand('show-web-root'));
 $app->add(new BitrixTool\Commands\TemplatesListCommand('templates:list'));
 $app->add(new BitrixTool\Commands\TemplatesCopyCommand('templates:copy'));
 $app->add(new BitrixTool\Commands\ComponentsListCommand('components:list'));
+$app->add(new BitrixTool\Commands\GenerateIncludeCommand('generate:include'));
 $app->run();

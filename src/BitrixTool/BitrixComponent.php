@@ -81,7 +81,8 @@ class BitrixComponent
         return $this->getComponentDir() . "/templates/" . $templateName;
     }
 
-    public function getLocalTemplatePath($siteTemplateName, $templateName) {
+    public function getLocalTemplatePath($siteTemplateName, $templateName) 
+    {
         return implode('/', array(
             BitrixTool::getInstance()->getSiteRoot(),
             'local/templates',
@@ -93,4 +94,20 @@ class BitrixComponent
         ));
     }
 
+    public function getParameters() 
+    {      
+        $parametersFilePath = $this->getComponentDir() . '/.parameters.php';
+        
+        if (!is_file($parametersFilePath))
+            return false;
+        
+        @include ($parametersFilePath);
+
+        if (!isset($arComponentParameters))
+            $arComponentParameters = array('GROUPS' => array(), 'PARAMETERS' => array());
+
+        // FIXME: Почему-то NAME не для всех параметров заполняются, 
+        //скорее всего проблема связана с подключением lang-файла.    
+        return $arComponentParameters;
+    }
 }
