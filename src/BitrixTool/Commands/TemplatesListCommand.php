@@ -22,6 +22,9 @@ class TemplatesListCommand extends Command {
             new InputArgument('component', InputArgument::REQUIRED, 'name of the component which templates we want to list'),
             new InputOption('full-path', 'f', InputOption::VALUE_NONE, 'output full paths to the templates folders'),
             new InputOption('show-location', 's', InputOption::VALUE_NONE, 'output templates names and its locations'),
+            new InputOption('default', 'd', InputOption::VALUE_NONE, 'show default component templates only'),
+            new InputOption('bitrix', 'b', InputOption::VALUE_NONE, 'show local templates only'),
+            new InputOption('local', 'l', InputOption::VALUE_NONE, 'show local templates only'),
         ));
       
         parent::configure();
@@ -44,11 +47,26 @@ class TemplatesListCommand extends Command {
         $showFullPath = $input->getOption('full-path');
         $showLocation = $input->getOption('show-location');
 
-        $templates = array_merge(
-            $component->getDefaultTemplates($showFullPath),
-            $component->getSiteTemplates('bitrix', $showFullPath, $showLocation),
-            $component->getSiteTemplates('local', $showFullPath, $showLocation)
-        );
+        if ($input->getOption('default'))
+        {
+            $templates = $component->getDefaultTemplates($showFullPath);
+        }
+        else if ($input->getOption('bitrix')) 
+        {
+            $templates = $component->getSiteTemplates('bitrix', $showFullPath, $showLocation);           
+        }
+        else if ($input->getOption('local')) 
+        {
+            $templates = $component->getSiteTemplates('local', $showFullPath, $showLocation);
+        }
+        else 
+        {
+            $templates = array_merge(
+                $component->getDefaultTemplates($showFullPath),
+                $component->getSiteTemplates('bitrix', $showFullPath, $showLocation),
+                $component->getSiteTemplates('local', $showFullPath, $showLocation)
+            );
+        }
 
         foreach($templates as $template) {
             $output->writeln("<info>$template</info>");
