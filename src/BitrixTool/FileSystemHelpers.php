@@ -25,7 +25,11 @@ class FileSystemHelpers
 
     public static function CopyDir($src, $dst) 
     {         
-        @mkdir($dst); 
+        if (!@mkdir($dst, 0777, true))
+        {
+            $error = error_get_last();
+            throw new \Exception($error['message'] . "\nDir: $dst", $error['type']); 
+        }
 
         $dir = opendir($src); 
 
@@ -33,13 +37,17 @@ class FileSystemHelpers
         { 
             if (( $file != '.' ) && ( $file != '..' )) 
             { 
-                if ( is_dir($src . '/' . $file) ) 
+                if ( is_dir("$src/$file") ) 
                 { 
-                    self::CopyDir($src . '/' . $file,$dst . '/' . $file); 
+                    self::CopyDir("$src/$file", "$dst/$file"); 
                 } 
                 else 
                 { 
-                    copy($src . '/' . $file,$dst . '/' . $file); 
+                    if (!@copy("$src/$file", "$dst/$file"))
+                    { 
+                        $error = error_get_last();
+                        throw new \Exception($error['message'], $error['type']);                    
+                    }
                 } 
             } 
         } 
