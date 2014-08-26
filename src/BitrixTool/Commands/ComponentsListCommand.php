@@ -16,6 +16,11 @@ class ComponentsListCommand extends Command
 {
     protected function configure() 
     {      
+        $this->setDefinition(array(
+            new InputOption('bitrix', 'b', InputOption::VALUE_NONE, 'Show only core components (from bitrix folder)'),
+            new InputOption('local', 'l', InputOption::VALUE_NONE, 'Show only local components (from local folder)'),
+        ));
+
         parent::configure();
     }       
     
@@ -27,9 +32,15 @@ class ComponentsListCommand extends Command
     {
         $bitrix = BitrixTool::getInstance();
 
+        $showCoreComponents = $input->getOption('bitrix');
+        $showLocalComponents = $input->getOption('local');
+
+        if (!$showCoreComponents && !$showLocalComponents)
+            $showCoreComponents = $showLocalComponents = true;
+
         $components = array_merge(
-            $bitrix->getComponents('bitrix'),
-            $bitrix->getComponents('local')
+            $showCoreComponents ? $bitrix->getComponents('bitrix') : array(),
+            $showLocalComponents ? $bitrix->getComponents('local') : array()
         );
 
         foreach ($components as $component) {
