@@ -20,6 +20,7 @@ class GenerateIncludeCommand extends Command
         $this->setDefinition(array(
             new InputArgument('template', InputArgument::OPTIONAL, 'component template name'),
             new InputOption('component', 'c', InputOption::VALUE_REQUIRED, 'name of a component'),
+            new InputOption('sort', 's', InputOption::VALUE_NONE, 'sort component parameters by name'),
         ));
 
         parent::configure();
@@ -51,7 +52,9 @@ class GenerateIncludeCommand extends Command
 
         $output->writeln('<info>'.sprintf('<?$APPLICATION->IncludeComponent("%s", "%s", array(', $componentName, $templateName).'</info>');
 
-        $parameters = $component->getParameters()['PARAMETERS'];        
+        $parameters = $component->getParameters()['PARAMETERS'];  
+        if ($input->getOption('sort')) ksort($parameters);
+
         foreach ($parameters as $name => $settings) {
             // TODO: Добавить вывод комментария с именем параметра.
             $defaultValue = $settings['DEFAULT'] ? $settings['DEFAULT'] : '';
