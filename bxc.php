@@ -16,4 +16,6 @@ $app->add(new BitrixTool\Commands\TemplatesListCommand('templates:list'));
 $app->add(new BitrixTool\Commands\TemplatesCopyCommand('templates:copy'));
 $app->add(new BitrixTool\Commands\ComponentsListCommand('components:list'));
 $app->add(new BitrixTool\Commands\GenerateIncludeCommand('generate:include'));
+$app->add(new BitrixTool\Commands\IBlockListTypesCommand('iblock:types'));
+$app->add(new BitrixTool\Commands\IBlockListCommand('iblock:list'));
 $app->run();
