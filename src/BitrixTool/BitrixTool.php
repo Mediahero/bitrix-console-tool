@@ -65,6 +65,8 @@ class BitrixTool
     }
 
     public function siteTemplateExists($templateName) {
+        if (!$templateName)
+            return false;
         $siteRoot = $this->getSiteRoot();
         return file_exists("$siteRoot/local/templates/$templateName");
     }

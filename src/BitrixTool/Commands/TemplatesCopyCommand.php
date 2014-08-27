@@ -56,6 +56,13 @@ class TemplatesCopyCommand extends Command
 
         // Шаблон сайта, в который будет скопирован шаблон.
         $siteTemplateName = $input->getOption('site-template');
+        if (!$siteTemplateName) 
+        {
+            $output->writeln("<error>Site template name not specified!</error>");
+            $output->writeln("<comment>Use --site-template option to specify site template where " .
+                "to place component template.</comment>");
+            exit(1);
+        }
         if (!$bitrix->siteTemplateExists($siteTemplate)) 
         {
             $output->writeln("<error>Site template $siteTemplateName does not exist</error>");
