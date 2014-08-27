@@ -19,7 +19,10 @@ class BitrixComponent
         
         $matches = array();
         if (preg_match("/^(\w+):(.+?)$/", $name, $matches)) 
-            list(, $this->namespace, $this->name) = $matches;        
+            list(, $this->namespace, $this->name) = $matches;
+
+        if (!$this->namespace) 
+            $this->namespace = 'bitrix';
     }
 
     public function getNamespace() {
@@ -28,6 +31,10 @@ class BitrixComponent
 
     public function getName() {
         return $this->name;
+    }
+
+    public function getFullName() {
+        return sprintf("%s:%s", $this->getNamespace(), $this->getName());
     }
 
     public function getComponentDir() 

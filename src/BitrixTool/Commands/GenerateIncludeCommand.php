@@ -50,7 +50,8 @@ class GenerateIncludeCommand extends Command
         $templateName = $input->getArgument('template');
         if (!$templateName) $templateName = '';
 
-        $output->writeln('<info>'.sprintf('<?$APPLICATION->IncludeComponent("%s", "%s", array(', $componentName, $templateName).'</info>');
+        $output->writeln('<info>'.sprintf('<?$APPLICATION->IncludeComponent("%s", "%s", array(', 
+            $component->getFullName(), $templateName).'</info>');
 
         $parameters = $component->getParameters()['PARAMETERS'];  
         if ($input->getOption('sort')) ksort($parameters);
