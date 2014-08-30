@@ -41,14 +41,14 @@ class GenerateIncludeCommand extends Command
         {
             $output->writeln('<error>Component name must be given</error>');
             $output->writeln('<comment>Use -c option to specify component name</comment>');
-            exit(1);
+            return 1; // set error status code
         }
 
         $component = new BitrixComponent($componentName);
         if (!$component->exists())
         {
             $output->writeln("<error>Component $componentName not found </error>");
-            exit(1);            
+            return 1;            
         }
 
         $templateName = $input->getArgument('template');

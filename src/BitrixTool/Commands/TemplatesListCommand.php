@@ -41,7 +41,7 @@ class TemplatesListCommand extends Command {
         $component = new BitrixComponent($componentName);
         if (!$component->exists()) {
             $output->writeln("<error>Component $componentName not found </error>");
-            exit(1);
+            return 1;
         }
 
         $showFullPath = $input->getOption('full-path');

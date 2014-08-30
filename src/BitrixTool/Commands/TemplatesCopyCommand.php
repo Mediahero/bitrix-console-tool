@@ -42,7 +42,7 @@ class TemplatesCopyCommand extends Command
         if (!$component->exists()) 
         {
             $output->writeln("<error>Component $componentName not found </error>");
-            exit(1);
+            return 1;
         }
        
         // Копируемый шаблон.
@@ -51,7 +51,7 @@ class TemplatesCopyCommand extends Command
         if (!file_exists($srcTemplatePath)) 
         {
             $output->writeln("<error>Template $srcTemplatePath not found for component $componentName</error>");
-            exit(1);
+            return 1;
         }
 
         // Шаблон сайта, в который будет скопирован шаблон.
@@ -61,12 +61,12 @@ class TemplatesCopyCommand extends Command
             $output->writeln("<error>Site template name not specified!</error>");
             $output->writeln("<comment>Use --site-template option to specify site template where " .
                 "to place component template.</comment>");
-            exit(1);
+            return 1;
         }
         if (!$bitrix->siteTemplateExists($siteTemplate)) 
         {
             $output->writeln("<error>Site template $siteTemplateName does not exist</error>");
-            exit(1);
+            return 1;
         } 
 
         // Название с которым будет скопирован шаблон.
@@ -80,7 +80,7 @@ class TemplatesCopyCommand extends Command
         {
             $output->writeln("<error>Template $dstTemplateName already exsist.</error>");
             $output->writeln("<info>Use --force option to overwrite</info>");
-            exit(1);
+            return 1;
         }
 
         $output->writeln("<comment>Copying component template:</comment>");
