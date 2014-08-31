@@ -63,7 +63,7 @@ class TemplatesCopyCommand extends Command
                 "to place component template.</comment>");
             return 1;
         }
-        if (!$bitrix->siteTemplateExists($siteTemplate)) 
+        if (!$bitrix->siteTemplateExists($siteTemplateName)) 
         {
             $output->writeln("<error>Site template $siteTemplateName does not exist</error>");
             return 1;
