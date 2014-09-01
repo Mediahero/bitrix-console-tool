@@ -40,6 +40,11 @@ class BitrixComponent
     public function getComponentDir() 
     {
         $siteRoot = BitrixTool::getInstance()->getSiteRoot();
+        
+        $localPath = "$siteRoot/local/components/" . $this->getNamespace() . "/" . $this->getName();
+        if (file_exists($localPath))
+            return $localPath;
+
         return "$siteRoot/bitrix/components/" . $this->getNamespace() . "/" . $this->getName();
     }
 
